@@ -4,7 +4,7 @@ You can use default InputField UI component on iOS and Android `without addition
 
 > It's deep refactor and bug fix of UnityNativeEdit (https://github.com/kmbang/UnityNativeEdit)
 
-ORIGINAL README MOVED TO HERE:
+ORIGINAL README MOVED TO HERE: https://github.com/lingraphica/UnityMobileInput/blob/master/Android/README.md
 
 # Creating plugin
 - Once repo is cloned, open Android Studio, then open the project located at UnityMobileInput>Android>UnityMobileInput
