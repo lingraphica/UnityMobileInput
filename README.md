@@ -8,5 +8,5 @@ ORIGINAL README MOVED TO HERE: https://github.com/lingraphica/UnityMobileInput/b
 
 # Creating plugin
 - Once repo is cloned, open Android Studio, then open the project located at UnityMobileInput>Android>UnityMobileInput
-- Open the Gradle sidebar in Studio, open the Tasks for 'common' and 'mobileinput' and double-click on the 'assemblerelease' and 'assembledebug' gears.
+- Open the Gradle sidebar in Studio, open the Tasks for 'common' and 'mobileinput', then 'build' and finally double-click on the 'assemblerelease' and 'assembledebug' gears.
 - In the project folder, you will find the compiled .aar files in build>outputs>aar
