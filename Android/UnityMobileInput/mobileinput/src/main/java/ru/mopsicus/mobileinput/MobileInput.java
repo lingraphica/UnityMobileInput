@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -23,6 +24,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -233,6 +235,7 @@ public class MobileInput {
             }
             if (multiline) {
                 editInputType |= InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
+                Log.e("KB", " Multiline " + this.id + " type" + editInputType);
             }
             edit.setInputType(editInputType);
             int gravity = 0;
@@ -394,6 +397,9 @@ public class MobileInput {
         }
         if (isFocus) {
             edit.requestFocus();
+            Log.e("KB", "edit text " + edit.getText());
+            edit.setSelection(edit.getText().length());
+
         } else {
             edit.clearFocus();
         }
