@@ -12,7 +12,6 @@ import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -396,7 +395,6 @@ public class MobileInput {
         }
         if (isFocus) {
             edit.requestFocus();
-            Log.e("KB", "edit text " + edit.getText());
             edit.setSelection(edit.getText().length());
 
         } else {
