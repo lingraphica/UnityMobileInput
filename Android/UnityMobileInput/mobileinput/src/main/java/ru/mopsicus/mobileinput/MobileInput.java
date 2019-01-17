@@ -235,7 +235,6 @@ public class MobileInput {
             }
             if (multiline) {
                 editInputType |= InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
-                Log.e("KB", " Multiline " + this.id + " type" + editInputType);
             }
             edit.setInputType(editInputType);
             int gravity = 0;
