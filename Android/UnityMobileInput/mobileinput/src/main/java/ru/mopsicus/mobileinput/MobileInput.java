@@ -9,6 +9,7 @@ package ru.mopsicus.mobileinput;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -23,9 +24,14 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 
 public class MobileInput {
 
@@ -48,6 +54,7 @@ public class MobileInput {
     private final RelativeLayout layout;
     private int characterLimit;
     private static SparseArray<MobileInput> mobileInputList = null;
+    private static boolean isUpper;
 
     // Constructor
     private MobileInput(RelativeLayout parentLayout) {
@@ -114,6 +121,8 @@ public class MobileInput {
 
     // Create new MobileInput
     private void Create(int id, JSONObject data) {
+        isUpper = GetMultiTalkPref("useUppercase").equals("1");
+        System.out.println("isupper: "+ isUpper);
         this.id = id;
         try {
             String placeHolder = data.getString("placeholder");
@@ -303,15 +312,31 @@ public class MobileInput {
             });
             edit.addTextChangedListener(new TextWatcher() {
                 public void afterTextChanged(Editable s) {
+                    boolean updateText = false;
                     JSONObject data = new JSONObject();
+                    String newText = s.toString();
+                    System.out.println("before upper check:" + s);
+
+                    if (isUpper){
+                        if (!newText.equals(s.toString().toUpperCase())){
+                            newText = s.toString().toUpperCase();
+                            updateText = true;
+                            System.out.println("setting text to upper: " + newText);
+                        }
+                    }
+
                     if (characterLimit > 0 && s.length() >= characterLimit + 1) {
                         s.delete(s.length() - 1, s.length());
-                        edit.setText(s);
+                        newText = newText.substring(0, newText.length()-2);
+                        updateText = true;
+                    }
+                    if (updateText){
+                        edit.setText(newText);
                         edit.setSelection(s.length());
                     }
                     try {
                         data.put("msg", TEXT_CHANGE);
-                        data.put("text", s.toString());
+                        data.put("text", newText);
                     } catch (JSONException e) {
                     }
                     sendData(data);
@@ -395,8 +420,6 @@ public class MobileInput {
         }
         if (isFocus) {
             edit.requestFocus();
-            edit.setSelection(edit.getText().length());
-
         } else {
             edit.clearFocus();
         }
@@ -499,6 +522,36 @@ public class MobileInput {
         }
         catch(JSONException e) {}
         Plugin.common.sendData(Plugin.name, data.toString());
+    }
+
+    public static String GetMultiTalkPref(String key){
+        String result = "";
+        String path = Environment.getExternalStorageDirectory() + "/lingraphica/user/prefs.json";
+        System.out.println(path);
+
+        File prefsFile = new File(path);
+        System.out.println("File exists:" + prefsFile.exists());
+        try {
+            FileInputStream stream = new FileInputStream(prefsFile);
+            try {
+                String jString = null;
+                FileChannel fc = stream.getChannel();
+                MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+                /* Instead of using default, pass in a decoder. */
+                jString = Charset.defaultCharset().decode(bb).toString();
+                System.out.println(jString);
+                JSONObject prefs = new JSONObject(jString);
+                result = prefs.getString(key);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                stream.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
 }
