@@ -122,7 +122,6 @@ public class MobileInput {
     // Create new MobileInput
     private void Create(int id, JSONObject data) {
         isUpper = GetMultiTalkPref("useUppercase").equals("1");
-        System.out.println("isupper: "+ isUpper);
         this.id = id;
         try {
             String placeHolder = data.getString("placeholder");
@@ -316,13 +315,11 @@ public class MobileInput {
                     boolean updateText = false;
                     JSONObject data = new JSONObject();
                     String newText = s.toString();
-                    System.out.println("before upper check:" + s);
 
                     if (isUpper){
                         if (!newText.equals(s.toString().toUpperCase())){
                             newText = s.toString().toUpperCase();
                             updateText = true;
-                            System.out.println("setting text to upper: " + newText);
                         }
                     }
 
@@ -528,10 +525,7 @@ public class MobileInput {
     public static String GetMultiTalkPref(String key){
         String result = "";
         String path = Environment.getExternalStorageDirectory() + "/lingraphica/user/prefs.json";
-        System.out.println(path);
-
         File prefsFile = new File(path);
-        System.out.println("File exists:" + prefsFile.exists());
         try {
             FileInputStream stream = new FileInputStream(prefsFile);
             try {
@@ -540,7 +534,6 @@ public class MobileInput {
                 MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
                 /* Instead of using default, pass in a decoder. */
                 jString = Charset.defaultCharset().decode(bb).toString();
-                System.out.println(jString);
                 JSONObject prefs = new JSONObject(jString);
                 result = prefs.getString(key);
             } catch (Exception e) {
