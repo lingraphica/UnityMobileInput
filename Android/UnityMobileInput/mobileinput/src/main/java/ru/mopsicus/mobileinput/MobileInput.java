@@ -199,6 +199,7 @@ public class MobileInput {
                             break;
                         case "URL":
                             editInputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_VARIATION_URI;
+                            isUpper = false;
                             break;
                         case "NumberPad":
                             editInputType = InputType.TYPE_CLASS_NUMBER;
