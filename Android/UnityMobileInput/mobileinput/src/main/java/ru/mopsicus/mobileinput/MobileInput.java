@@ -506,6 +506,7 @@ public class MobileInput {
             catch(JSONException e) {}
             sendData(data);
             imm.showSoftInput(edit, InputMethodManager.SHOW_FORCED);
+            edit.setSelection(edit.getText().length());
         } else {
             edit.clearFocus();
             rootView.clearFocus();
